@@ -44,12 +44,12 @@ def count_specific_word(text_to_search, search_word):
     """Counts the number of occurrences of search_word in text_to_search."""
     if not search_word:
         return 0
-    
+
     text_lower = text_to_search.lower()
     word_lower = search_word.lower()
     count = 0
     index = 0
-    
+
     # Use of WHILE LOOP as per criteria
     while True:
         index = text_lower.find(word_lower, index)
@@ -59,56 +59,54 @@ def count_specific_word(text_to_search, search_word):
         index += len(word_lower)
     return count
 
+
 def identify_most_common_word(text):
     """Identifies the most common word in the text. Edge case: empty string returns None."""
     if not text.strip():
         return None
-    
-    # Use regex to remove punctuation
+
     cleaned_text = re.sub(r'[^\w\s]', '', text).lower()
     words = cleaned_text.split()
-    
+
     if not words:
         return None
-        
+
     counts = Counter(words)
     return counts.most_common(1)[0][0]
 
+
 def calculate_average_word_length(text):
-    """Calculates avg word length excluding punctuation. Edge case: empty string returns 0."""
+    """Calculates avg word length excluding punctuation. Edge case: empty string returns 0.0."""
     if not text.strip():
-        return 0
-        
+        return 0.0
+
     cleaned_text = re.sub(r'[^\w\s]', '', text)
     words = cleaned_text.split()
-    
+
     if not words:
-        return 0
-    
+        return 0.0
+
     total_chars = 0
     # Use of FOR LOOP as per criteria
     for word in words:
         total_chars += len(word)
-        
-    return float(total_chars / len(words))
 
+    return round(float(total_chars / len(words)), 2)
 def count_paragraphs(text):
-    """Counts paragraphs based on empty lines. Edge case: empty string returns 1."""
+    """Counts paragraphs based on empty lines. Edge case: empty string returns 0."""
     if not text.strip():
-        return 1
-    
-    # Split by double newline or more
-    paragraphs = [p for p in re.split(r'\n\s*\n', text) if p.strip()]
+        return 0
+
+    paragraphs = [p for p in re.split(r'\n\s*\n+', text) if p.strip()]
     return len(paragraphs)
 
+
 def count_sentences(text):
-    """Counts sentences based on . ! ?. Edge case: empty string returns 1."""
+    """Counts sentences based on sentence terminators. Edge case: empty string returns 0."""
     if not text.strip():
-        return 1
-    
-    sentences = re.split(r'[.!?]', text)
-    # Filter out empty strings from the split
-    sentences = [s for s in sentences if s.strip()]
+        return 0
+
+    sentences = [s.strip() for s in re.findall(r'[^.!?]+(?:[.!?]|$)', text) if s.strip()]
     return len(sentences)
 
 def run_analysis(text):
@@ -146,7 +144,7 @@ if __name__ == "__main__":
     
     # Testing Edge Cases as requested
     print("\n--- Edge Case Testing ---")
-    print(f"Empty String Paragraphs (Expected 1): {count_paragraphs('')}")
-    print(f"Empty String Sentences (Expected 1): {count_sentences('')}")
-    print(f"Empty String Word Length (Expected 0): {calculate_average_word_length('')}")
+    print(f"Empty String Paragraphs (Expected 0): {count_paragraphs('')}")
+    print(f"Empty String Sentences (Expected 0): {count_sentences('')}")
+    print(f"Empty String Word Length (Expected 0.0): {calculate_average_word_length('')}")
     print(f"Empty String Common Word (Expected None): {identify_most_common_word('')}")
