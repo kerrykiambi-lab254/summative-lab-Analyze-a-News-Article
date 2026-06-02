@@ -93,18 +93,18 @@ def calculate_average_word_length(text):
 
     return round(float(total_chars / len(words)), 2)
 def count_paragraphs(text):
-    """Counts paragraphs based on empty lines. Edge case: empty string returns 0."""
+    """Counts paragraphs based on empty lines. Edge case: empty string returns 1."""
     if not text.strip():
-        return 0
+        return 1
 
     paragraphs = [p for p in re.split(r'\n\s*\n+', text) if p.strip()]
     return len(paragraphs)
 
 
 def count_sentences(text):
-    """Counts sentences based on sentence terminators. Edge case: empty string returns 0."""
+    """Counts sentences based on sentence terminators. Edge case: empty string returns 1."""
     if not text.strip():
-        return 0
+        return 1
 
     sentences = [s.strip() for s in re.findall(r'[^.!?]+(?:[.!?]|$)', text) if s.strip()]
     return len(sentences)
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     
     # Testing Edge Cases as requested
     print("\n--- Edge Case Testing ---")
-    print(f"Empty String Paragraphs (Expected 0): {count_paragraphs('')}")
-    print(f"Empty String Sentences (Expected 0): {count_sentences('')}")
+    print(f"Empty String Paragraphs (Expected 1): {count_paragraphs('')}")
+    print(f"Empty String Sentences (Expected 1): {count_sentences('')}")
     print(f"Empty String Word Length (Expected 0.0): {calculate_average_word_length('')}")
     print(f"Empty String Common Word (Expected None): {identify_most_common_word('')}")
